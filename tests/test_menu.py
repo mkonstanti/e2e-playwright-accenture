@@ -1,0 +1,48 @@
+from playwright.sync_api import Page, expect
+import re
+
+def test_visit_menu_links(page:Page):
+    print("Given the user visit homepage accenture")
+    #Navegación, abrir la url en el navegador
+    page.goto("https://www.accenture.com/es-es")
+
+    print("When the user accept the cookies")
+    #Localizamos el elemento por texto.
+    page.get_by_text("Aceptar todas las Cookies.", exact = True).click()
+    page.wait_for_url("https://www.accenture.com/es-es")
+    print("And click on Servicios menu button")
+    #Localizamos el elemento de la categoria por rol (button, link, heading) y por texto exacto
+    page.get_by_role("button", name="Servicios", exact=True).click()
+    print("And click on Automation link in Servicios submenu")
+    page.get_by_role("menuitem", name="Automation", exact=True).click()
+    print("Then user should be on Automation page")
+    #Comprobamos que la url de la pagina contiene la url exacta
+    expect(page).to_have_url("https://www.accenture.com/es-es/services/intelligent-automation-index")
+    #Comprobamos que la url de la pagina contiene la palabra automation
+    expect(page).to_have_url(re.compile("automation"))
+    #Comprueba que el titulo de la pagina tiene el texto exacto Intelligent Business Process Automation Services | Accenture
+    expect(page).to_have_title("Intelligent Business Process Automation Services | Accenture")
+    #Localizamos el elemento con titulo heading (h1) que tenga el texto exacto Intelligent Automation
+    expect(page.get_by_role("Intelligent Automation", name="", exact=True)).to_be_visible
+
+    #Volvemos a la homepage para hacer click al siguiente link
+    page.goto("https://www.accenture.com/es-es")
+    print("And click on Quiénes somos menu button")
+    page.get_by_role("button", name="Quiénes somos", exact=True).click()
+    print("And click on Quiénes somos link in Quiénes somos submenu")
+    page.get_by_role("menuitem", name="Quiénes somos", exact=True).click()
+    print("Then user should be on Quiénes somos page")
+    expect(page).to_have_url("https://www.accenture.com/es-es/about/company-index")
+    expect(page).to_have_title("Sobre nuestra empresa | Accenture")
+    expect(page.get_by_role("Nuestro propósito:", name="", exact=True)).to_be_visible
+
+    #Volvemos a la homepage para hacer click al siguiente link
+    page.goto("https://www.accenture.com/es-es")
+    print("And click on Incorpórate menu button")
+    page.get_by_role("button", name="Incorpórate", exact=True).click()
+    print("And click on Buscador de ofertas link in Incorpórate submenu")
+    page.get_by_role("menuitem", name="Buscador de ofertas", exact=True).click()
+    print("Then user should be on Buscador de ofertas page")
+    expect(page).to_have_url("https://www.accenture.com/es-es/careers/jobsearch?jk=&sb=1&vw=0&is_rj=0&pg=1")
+    expect(page).to_have_title("Search Jobs | Accenture")
+    expect(page.get_by_role("Busca ofertas en Accenture", name="", exact=True)).to_be_visible
