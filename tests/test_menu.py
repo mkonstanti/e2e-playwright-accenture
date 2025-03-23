@@ -1,20 +1,29 @@
 from playwright.sync_api import Page, expect
 import re
+import utils
 
 def test_visit_menu_links(page:Page):
-    print("Given the user visit homepage accenture")
+    print("Given the user visits homepage accenture")
     #Navegación, abrir la url en el navegador
     page.goto("https://www.accenture.com/es-es")
 
-    print("When the user accept the cookies")
+    print("When the user accepts the cookies")
     #Localizamos el elemento por texto.
     page.get_by_text("Aceptar todas las Cookies.", exact = True).click()
     page.wait_for_url("https://www.accenture.com/es-es")
-    print("And click on Servicios menu button")
+
+    print("And clicks on Servicios menu button")
+    if(utils.is_mobile(page)):
+        page.get_by_role("button", name="menu", exact=True).click()
+        page.get_by_role("button", name="Servicios", exact=True).click()
+        page.locator("button.rad-global-nav__l2-button", has_text="Servicios").click()
+    else:
+        page.get_by_role("button", name="Servicios", exact=True).click()
     #Localizamos el elemento de la categoria por rol (button, link, heading) y por texto exacto
-    page.get_by_role("button", name="Servicios", exact=True).click()
-    print("And click on Automation link in Servicios submenu")
+    
+    print("And clicks on Automation link in Servicios submenu")
     page.get_by_role("menuitem", name="Automation", exact=True).click()
+
     print("Then user should be on Automation page")
     #Comprobamos que la url de la pagina contiene la url exacta
     expect(page).to_have_url("https://www.accenture.com/es-es/services/intelligent-automation-index")
@@ -27,10 +36,16 @@ def test_visit_menu_links(page:Page):
 
     #Volvemos a la homepage para hacer click al siguiente link
     page.goto("https://www.accenture.com/es-es")
-    print("And click on Quiénes somos menu button")
-    page.get_by_role("button", name="Quiénes somos", exact=True).click()
-    print("And click on Quiénes somos link in Quiénes somos submenu")
+    print("And clicks on Quiénes somos menu button")
+    if(utils.is_mobile(page)):
+        page.get_by_role("button", name="menu", exact=True).click()
+        page.get_by_role("button", name="Quiénes somos", exact=True).click()
+        page.locator("button.rad-global-nav__l2-button", has_text="Quiénes somos").click()
+    else:
+        page.get_by_role("button", name="Quiénes somos", exact=True).click()
+    print("And clicks on Quiénes somos link in Quiénes somos submenu")
     page.get_by_role("menuitem", name="Quiénes somos", exact=True).click()
+    
     print("Then user should be on Quiénes somos page")
     expect(page).to_have_url("https://www.accenture.com/es-es/about/company-index")
     expect(page).to_have_title("Sobre nuestra empresa | Accenture")
@@ -38,10 +53,17 @@ def test_visit_menu_links(page:Page):
 
     #Volvemos a la homepage para hacer click al siguiente link
     page.goto("https://www.accenture.com/es-es")
-    print("And click on Incorpórate menu button")
-    page.get_by_role("button", name="Incorpórate", exact=True).click()
-    print("And click on Buscador de ofertas link in Incorpórate submenu")
+    print("And clicks on Incorpórate menu button")
+    if(utils.is_mobile(page)):
+        page.get_by_role("button", name="menu", exact=True).click()
+        page.get_by_role("button", name="Incorpórate", exact=True).click()
+        page.locator("button.rad-global-nav__l2-button", has_text="Únete a nuestro equipo").click()
+    else:
+        page.get_by_role("button", name="Incorpórate", exact=True).click()
+
+    print("And clicks on Buscador de ofertas link in Incorpórate submenu")
     page.get_by_role("menuitem", name="Buscador de ofertas", exact=True).click()
+
     print("Then user should be on Buscador de ofertas page")
     expect(page).to_have_url("https://www.accenture.com/es-es/careers/jobsearch?jk=&sb=1&vw=0&is_rj=0&pg=1")
     expect(page).to_have_title("Search Jobs | Accenture")
