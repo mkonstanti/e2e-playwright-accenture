@@ -12,14 +12,14 @@ jobs:
     timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v4 #Descargar el codigo de github lo ultimo
 
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
         python-version: '3.11'
 
-    - name: Install dependencies
+    - name: Install dependencies 
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
@@ -35,13 +35,30 @@ jobs:
       uses: actions/upload-artifact@v4
       if: always()
       with:
-        name: playwright-report-desktop
+        name: playwright-html-report-desktop
         path: resultsdesktop.html
 
-    - name: Upload Test Results
+    - name: Upload Videos and Traces Desktop
       uses: actions/upload-artifact@v4
       if: always()
       with:
-        name: playwright-videos-traces
+        name: playwright-videos-desktop
         path: test-results/
 
+    - name: Run tests on Mobile
+      run: |
+        pytest --capture=tee-sys --html=resultsmobile.html --self-contained-html --device="iPhone 12" --video=on
+
+    - name: Upload Playwright report (Mobile)
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: playwright-html-report-mobile
+        path: resultsmobile.html
+
+    - name: Upload Videos and Traces Mobile
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: playwright-videos-mobile
+        path: test-results/
