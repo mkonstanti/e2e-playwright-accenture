@@ -29,7 +29,7 @@ jobs:
 
     - name: Run tests on desktop
       run: |
-        pytest --capture=tee-sys --html=resultsdesktop.html --self-contained-html --device="Desktop Chrome" --video=on
+        pytest --capture=tee-sys --html=resultsdesktop.html --self-contained-html --browser=chromium --video=on
 
     - name: Upload Playwright report (Desktop)
       uses: actions/upload-artifact@v4
