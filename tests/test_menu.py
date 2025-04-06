@@ -22,7 +22,7 @@ def test_visit_menu_links(page:Page):
     #Localizamos el elemento de la categoria por rol (button, link, heading) y por texto exacto
     
     print("And clicks on Automation link in Servicios submenu")
-    page.get_by_role("menuitem", name="Automation", exact=True).click()
+    page.get_by_role("link", name="Automation", exact=True).click()
 
     print("Then user should be on Automation page")
     #Comprobamos que la url de la pagina contiene la url exacta
@@ -44,7 +44,7 @@ def test_visit_menu_links(page:Page):
     else:
         page.get_by_role("button", name="Quiénes somos", exact=True).click()
     print("And clicks on Quiénes somos link in Quiénes somos submenu")
-    page.get_by_role("menuitem", name="Quiénes somos", exact=True).click()
+    page.get_by_role("link", name="Quiénes somos", exact=True).click()
     
     print("Then user should be on Quiénes somos page")
     expect(page).to_have_url("https://www.accenture.com/es-es/about/company-index")
@@ -62,7 +62,7 @@ def test_visit_menu_links(page:Page):
         page.get_by_role("button", name="Incorpórate", exact=True).click()
 
     print("And clicks on Buscador de ofertas link in Incorpórate submenu")
-    page.get_by_role("menuitem", name="Buscador de ofertas", exact=True).click()
+    page.get_by_role("link", name="Buscador de ofertas", exact=True).click()
 
     print("Then user should be on Buscador de ofertas page")
     expect(page).to_have_url("https://www.accenture.com/es-es/careers/jobsearch?jk=&sb=1&vw=0&is_rj=0&pg=1")
