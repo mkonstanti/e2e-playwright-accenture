@@ -29,7 +29,7 @@ jobs:
 
     - name: Run tests on desktop
       run: |
-        pytest --capture=tee-sys --html=resultsdesktop.html --self-contained-html --device="Desktop Chrome" --video=on --video=retain-on-failure
+        pytest --capture=tee-sys --html=resultsdesktop.html --self-contained-html --device="Desktop Chrome" --video=on --tracing=retain-on-failure
 
     - name: Upload Playwright report (Desktop)
       uses: actions/upload-artifact@v4
@@ -42,12 +42,13 @@ jobs:
       uses: actions/upload-artifact@v4
       if: always()
       with:
-        name: playwright-videos-desktop
+        name: playwright-videos-traces
         path: test-results/
 
     - name: Run tests on Mobile
+      if: always()
       run: |
-        pytest --capture=tee-sys --html=resultsmobile.html --self-contained-html --device="iPhone 12" --video=on --video=retain-on-failure
+        pytest --capture=tee-sys --html=resultsmobile.html --self-contained-html --device="iPhone 12" --video=on --tracing=retain-on-failure
 
     - name: Upload Playwright report (Mobile)
       uses: actions/upload-artifact@v4
@@ -60,5 +61,5 @@ jobs:
       uses: actions/upload-artifact@v4
       if: always()
       with:
-        name: playwright-videos-mobile
+        name: playwright-videos-traces-mobile
         path: test-results/
