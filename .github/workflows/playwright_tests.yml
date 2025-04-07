@@ -29,7 +29,7 @@ jobs:
 
     - name: Run tests on desktop
       run: |
-        pytest --capture=tee-sys --html=resultsdesktop.html --self-contained-html --browser=chromium --video=on
+        pytest --capture=tee-sys --html=resultsdesktop.html --self-contained-html --device="Desktop Chrome" --video=on --video=retain-on-failure
 
     - name: Upload Playwright report (Desktop)
       uses: actions/upload-artifact@v4
@@ -47,7 +47,7 @@ jobs:
 
     - name: Run tests on Mobile
       run: |
-        pytest --capture=tee-sys --html=resultsmobile.html --self-contained-html --device="iPhone 12" --video=on
+        pytest --capture=tee-sys --html=resultsmobile.html --self-contained-html --device="iPhone 12" --video=on --video=retain-on-failure
 
     - name: Upload Playwright report (Mobile)
       uses: actions/upload-artifact@v4
