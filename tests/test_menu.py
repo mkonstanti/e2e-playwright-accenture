@@ -1,6 +1,7 @@
 from playwright.sync_api import Page, expect
 import re
 import utils
+import os
 
 def test_visit_menu_links(page:Page):
     print("Given the user visits homepage accenture")
@@ -9,7 +10,12 @@ def test_visit_menu_links(page:Page):
 
     print("When the user accepts the cookies")
     #Localizamos el elemento por texto.
-    page.get_by_text("Aceptar todas las Cookies.", exact = True).click()
+    if os.getenv("GITHUB_ACTIONS") == "true":
+        # En GITHUB ACTIONS: cerrar el banner usando el aria-label
+        page.get_by_role("button", name="Cerrar").click()
+    else:
+        # En local: aceptar cookies por texto exacto
+        page.get_by_text("Aceptar todas las Cookies.", exact=True).click()
     page.wait_for_url("https://www.accenture.com/es-es")
 
     print("And clicks on Servicios menu button")

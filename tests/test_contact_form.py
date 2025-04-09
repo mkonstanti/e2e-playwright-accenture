@@ -1,10 +1,18 @@
 from playwright.sync_api import Page, expect
+import os
 
 def test_send_form_with_invalid_email(page:Page):
     print("Given user visit contact page")
     page.goto("https://www.accenture.com/es-es/about/contact-us")
     print("And user accepts the cookies")
-    page.get_by_text("Aceptar todas las Cookies.", exact = True).click()
+    #page.get_by_text("Aceptar todas las Cookies.", exact = True).click()
+    if os.getenv("GITHUB_ACTIONS") == "true":
+        # En GITHUB ACTIONS: cerrar el banner usando el aria-label
+        page.get_by_role("button", name="Cerrar").click()
+    else:
+        # En local: aceptar cookies por texto exacto
+        page.get_by_text("Aceptar todas las Cookies.", exact=True).click()
+
     page.wait_for_url("https://www.accenture.com/es-es/about/contact-us")
 
     print("When user opens contact form")
